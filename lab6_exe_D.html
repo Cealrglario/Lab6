@@ -47,12 +47,56 @@ Description : API Usage.
     <script>
         // Function to fetch and display students
         async function fetchStudents() {
-            
+            // Use fetch to make a GET request
+            const response = await fetch("https://65dce651e7edadead7ed1355.mockapi.io/students");
+
+            // Convert the response to JSON
+            const students = await response.json();
+
+            // Get the studentList ul element
+            const studentList = document.getElementById('studentList');
+
+            // Iterate over the student data
+            students.forEach(student => {
+                // Create a list item for each student
+                const li = document.createElement('li');
+
+                // Set the text of each <li> to the student name
+                li.textContent = student.name;
+
+                // Add an onclick event to each <li> that calls fetchCourses with the student’s ID
+                li.onclick = () => fetchCourses(student.id);
+
+                // Append each <li> to the studentList UL element
+                studentList.appendChild(li);
+            });
         }
 
         // Function to fetch and display courses for a student
         async function fetchCourses(studentId) {
-            
+            // Use fetch to make a GET request
+            const response = await fetch(`https://65dce651e7edadead7ed1355.mockapi.io/students/${studentId}/courses`);
+
+            // Convert the response to JSON
+            const courses = await response.json();
+
+            // Get the courseList ul element
+            const courseList = document.getElementById('courseList');
+
+            // Clear the courseList before appending new items
+            courseList.innerHTML = '';
+
+            // Iterate over the courses data
+            courses.forEach(course => {
+                // Create a list item for each course
+                const li = document.createElement('li');
+
+                // Set the text of each <li> to the course name and unit
+                li.textContent = `${course.name} (Unit: ${course.unit})`;
+
+                // Append each <li> to the courseList UL element
+                courseList.appendChild(li);
+            });
         }
 
         // Fetch students on window load
